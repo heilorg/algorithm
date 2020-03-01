@@ -1,0 +1,39 @@
+#include<stdio.h>
+#include<string.h>
+int main(){
+	char a[500000], b[500000];
+	char s[500000] = {0};
+	char ch, temp;
+	int i, j;
+	
+	scanf("%s %s", a, b);
+	
+	for(i = 0; i < strlen(a) / 2; i++){
+		temp = a[i];
+		a[i] = a[strlen(a) - i - 1];
+		a[strlen(a) - i - 1] = temp;
+	}
+	for(i = 0; i < strlen(b) / 2; i++){
+		temp = b[i];
+		b[i] = b[strlen(b) - i - 1];
+		b[strlen(b) - i - 1] = temp;
+	}
+	
+	int lc = 0;
+	int big = strlen(a) > strlen(b) ? strlen(a) : strlen(b);
+	for(i = 0; i < big; i++){
+		if(a[i] == '\0')a[i] = '0';
+		if(b[i] == '\0')b[i] = '0';
+		s[i] = s[i] + a[i] - '0' + b[i] - '0';
+		lc = 0;
+		if(s[i] >= 10){
+			lc = 1;
+			s[i + 1] = s[i] / 10;
+			s[i] = s[i] % 10;
+		}
+	}
+	if(lc == 0)i--;
+	for(j = i; j >= 0; j--){
+		printf("%d", s[j]);		
+	}
+}

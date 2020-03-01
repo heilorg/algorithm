@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	
+</body>
+<script type="text/javascript">
+	// function solution(food_times, k) {
+	//     let min = food_times.reduce((m, val) => m > val ? val : m);
+	//     if(k - food_times.length * min < 0){
+	// 		return k % food_times.length + 1;
+	//     }else{
+	// 	    k = k - food_times.length * min;
+	// 	    food_times.forEach((x, idx) => food_times[idx] -= min);	
+	//     }
+	    
+	//     let sum = food_times.reduce((sum, val) => sum + val, 0);
+
+	//     let pointer = 0;
+
+
+ //    	for(let i = 0; i <= k; i++){
+
+ //    		let pointing = pointer % food_times.length; 
+
+	//         if(food_times[pointing] <= 0){
+	//         	if(sum == 0){
+	// 		    	return -1;
+	// 		    }
+	//             i = i - 1;
+	//             pointer = pointer + 1;
+	//             continue;
+	//         }
+	//         food_times[pointing] = food_times[pointing] - 1;
+	//         pointer = pointer + 1;
+	//         sum = sum - 1;
+	        
+	//     }
+	//     let pointing = pointer % food_times.length;
+	    
+	//     return pointing == 0 ? food_times.length : pointing;
+	// }
+
+	function solution(relation) {
+	    let answer = 0;
+	    let arr = [];
+
+	    if(relation.length == 1){
+	    	return relation[0].length;
+	    }
+
+	    let c = relation[0].length;
+	    let r = relation.length;
+
+    	relation[0].forEach((x, idx) => {
+    		arr.push(relation.map(x => x[idx]));
+    	});
+
+    	let unique = [];
+
+    	uniqueCheck(0);
+    	function uniqueCheck(lvl){
+    		let temp = [];
+    		if(lvl != 0){
+    			for(let i = 0; i < arr.length; i++){
+					let a = [];
+					arr[i].forEach((x, idx) => {
+						a.push(getString(idx, lvl, 0, []));
+					});
+
+					temp.push(a);
+				}
+    		}else{
+    			temp = arr;
+    		}
+    		console.log(lvl, temp);
+			temp.forEach((x, idx1) => {
+	    		let sum = 0;
+	    		x.forEach((el, idx2) => {
+	    			sum += x.reduce((sum, val) => sum + (val == x[idx2] ? 1 : 0), 0);
+	    		});
+
+	    		if(sum == x.length){
+					unique.push(idx1);
+	    		}
+	    	});
+	    	let idx = 0;
+	    	unique.forEach(x => {
+	    		answer += 1;
+	    		arr.splice(x, lvl+1+idx);
+	    		idx -= 1;
+	    	});
+	    	if(lvl == r)return;
+	    	unique = new Array();
+	    	uniqueCheck(lvl + 1);
+    	}
+
+    	function getString(index, lvl, sl, road){
+    		let returnArr = [];
+    		if(sl == lvl){
+    			let string = "";
+    			arr.forEach((x, idx) =>{
+    				road.forEach(e => {
+    					string += arr[idx][e];
+    				});
+    			});
+    			return [];
+    		}
+    		if(index + lvl > r){
+    			return [];
+    		}
+    		for(let i = index + 1; i < r; i++){
+    			let param = road;
+    			param.push(i);
+    			getString(i, lvl, sl+1, param).forEach(x => {
+    				returnArr.push(x);
+    			});
+    		}
+
+    		return returnArr;
+    	}
+    	console.log(answer);
+	    return answer;
+	}
+</script>
+</html>
