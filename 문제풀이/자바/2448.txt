@@ -1,0 +1,45 @@
+import java.io.IOException;
+import java.util.*;
+public class Main {
+    public static void main(String args[]) throws IOException  {
+        Scanner scan = new Scanner(System.in);
+        int number;
+        number = scan.nextInt();
+        int temp = number;
+        
+        StringBuilder blankBuilder = new StringBuilder();
+        for(int j = 0; j < temp; j++){
+           blankBuilder.append(" ");
+        }
+        String blank = new String(blankBuilder);
+        
+        StringBuilder printLine[] = new StringBuilder[number + 1];
+        
+        printLine[0].append("*");
+        printLine[1].append("* *");
+        printLine[2].append("*****");
+        
+        
+        number = number / 3;
+        int count = 1, line = 3, bottom = 5;
+        while(number != 1){
+            for(int i = 0; i < count * 3; i++){
+                printLine[line].append(printLine[line - count * 3]);
+                printLine[line].append(blank.substring(bottom - i * 2));
+                printLine[line].append(printLine[line - count * 3]);
+                line += 1;
+            }
+            
+            bottom = bottom * 2 + 1;
+            count = count * 2;
+            number = number / 2;
+        }
+        
+        for(int i = 0; i < temp; i++){
+            printLine[i].append(blank.substring(temp - i - 1));
+            printLine[i].insert(0, blank.substring(temp - i - 1));
+            printLine[i].append(blank.substring(temp - i - 1));
+            System.out.println(new String(printLine[i]));
+        }
+    }
+}
