@@ -13,20 +13,20 @@ public class Main {
         }
         String blank = new String(blankBuilder);
         
-        StringBuilder printLine[] = new StringBuilder[number + 1];
+        String printLine[] = new String[number + 1];
         
-        printLine[0].append("*");
-        printLine[1].append("* *");
-        printLine[2].append("*****");
+        printLine[0] = "*";
+        printLine[1] = "* *";
+        printLine[2] = "*****";
         
         
         number = number / 3;
         int count = 1, line = 3, bottom = 5;
         while(number != 1){
             for(int i = 0; i < count * 3; i++){
-                printLine[line].append(printLine[line - count * 3]);
-                printLine[line].append(blank.substring(bottom - i * 2));
-                printLine[line].append(printLine[line - count * 3]);
+                printLine[line] = printLine[line - count * 3] 
+                                + blank.substring(0, bottom - i * 2) 
+                                + printLine[line - count * 3];
                 line += 1;
             }
             
@@ -36,10 +36,11 @@ public class Main {
         }
         
         for(int i = 0; i < temp; i++){
-            printLine[i].append(blank.substring(temp - i - 1));
-            printLine[i].insert(0, blank.substring(temp - i - 1));
-            printLine[i].append(blank.substring(temp - i - 1));
-            System.out.println(new String(printLine[i]));
+            System.out.println(
+                blank.substring(0, temp - i - 1) 
+                + printLine[i] 
+                + blank.substring(0, temp - i - 1)
+            );
         }
     }
 }
