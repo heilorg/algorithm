@@ -1,0 +1,46 @@
+let code;
+
+login = () => {
+	const id = document.getElementById('id').value;
+	const password = document.getElementById('password').value;
+	beforeValidation();
+	
+	fetch('/login', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify({
+			id, password
+		})
+	}).then(function(response) {
+		return response.json();
+	}).then(function(res) {
+		document.getElementById('response_msg').innerText = res.code;
+		code = res.code;
+	})
+	
+	
+	afterValidation();
+}
+
+check = () => {
+	beforeValidation();
+	fetch("/check?code=" + code)
+		.then(res => res.json())
+		.then(res => {
+			console.log(res);
+			document.getElementById('response_msg').innerText = res.user.name + "님 환영합니다!";
+		});
+	afterValidation();
+}
+
+
+beforeValidation = () => {
+	const responseDiv = document.getElementById('response_msg');
+	responseDiv.style.visibility = "hidden";
+}
+afterValidation = () => {
+	const responseDiv = document.getElementById('response_msg');
+	responseDiv.style.visibility = "visible";
+}
